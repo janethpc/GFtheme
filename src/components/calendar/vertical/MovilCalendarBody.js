@@ -6,7 +6,7 @@ import CalendarMeetingMovil from "../CalendarMeetingMobile";
 import uid from "uid";
 import Slider from "react-slick";
 import StringStore from "../../utils/Strings/StringStore";
-import './css/MonthCalendarBody.css';
+import './css/MobileCalendarBody.css';
 
 
 
@@ -34,95 +34,97 @@ export default class MovilCalendarBody extends React.Component {
     }
 
     printDaysHeader() {
-        let {meetings_to_show} = this.props;
-        let preC = 'GFSDK-c';
+    const { meetings_to_show } = this.props;
+    let preC = 'GFSDK-c';
 
-        const dayList = meetings_to_show.map(function (day) {
-            return (
-                moment(day.date).toDate()
-            );
-        });
-
-        let dayTags = !!dayList && dayList.length ? dayList.map(function (item, i) {
-            moment.locale(StringStore.getLanguage().toLowerCase());
-            return (
-                <a
-                    key={`${preC}-Calendar--vertical-head--${item}`}
-                    className={meetings_to_show[i].meetings.length === 0 ? 'empty-slide' : ''}>
-                    <div>
-                        <p className="this-date">{moment(item).format('dd')}</p>
-                        <p className="this-number">{moment(item).format('D')}</p>
-                    </div>
-                </a>
-            );
-        }) : [];
-
-        return (<div className={`${preC}-Calendar__header_vertical calendar-movil`}>
-            {dayTags}
-        </div>)
+    if (!Array.isArray(meetings_to_show)) {
+        return null;
     }
 
+    const dayList = meetings_to_show.map(day =>
+        moment(day.date).toDate()
+    );
+
+    const dayTags = dayList.map((item, i) => {
+        moment.locale(StringStore.getLanguage().toLowerCase());
+
+        const isEmpty =
+            meetings_to_show[i] &&
+            meetings_to_show[i].meetings &&
+            meetings_to_show[i].meetings.length === 0;
+
+        return (
+            <a
+                key={`${preC}-Calendar--vertical-head--${item}`}
+                className={isEmpty ? 'empty-slide' : ''}
+            >
+                <div>
+                    <p className="this-date">{moment(item).format('dd')}</p>
+                    <p className="this-number">{moment(item).format('D')}</p>
+                </div>
+            </a>
+        );
+    });
+
+    return (
+        <div className={`${preC}-Calendar__header_vertical calendar-movil`}>
+            {dayTags}
+        </div>
+    );
+}
+
+
+
     printMeetingsBody() {
-        let {meetings_to_show, openFancy, closedFancy, login_initial, limit} = this.props;
-        let preC = 'GFSDK-c';
+    const { meetings_to_show, openFancy, closedFancy, login_initial, limit } = this.props;
+    let preC = 'GFSDK-c';
 
-        let listItems = [];
+    if (!Array.isArray(meetings_to_show)) {
+        return null;
+    }
 
-        meetings_to_show.forEach(function (day, index) {
-            let column_days = [];
-            let activeClass = day.meetings.filter((meeting) => {
-                if (meeting.passed === false) {
-                    return meeting;
-                }
-            });
-            if (limit) {
-                activeClass.slice(0, limit)
-            }
+    const listItems = meetings_to_show.map(day => {
+        let activeMeetings = day.meetings.filter(
+            meeting => meeting && meeting.passed === false
+        );
 
-            column_days = activeClass.map((meeting) => {
-                if (meeting) {
-                    return (
-                        <CalendarMeetingMovil
-                            key={`column-day--${uid()}--meeting--${meeting.id}`}
-                            meeting={meeting}
-                            day={day}
-                            openFancy={openFancy}
-                            closedFancy={closedFancy}
-                            login_initial={login_initial}
-                        />
-                    );
-                }
-            });
+        if (limit) {
+            activeMeetings = activeMeetings.slice(0, limit);
+        }
 
-            listItems.push(<div
+        return (
+            <div
                 key={`${preC}-Calendar__day_column_vertical--${day.date}`}
                 className={`${preC}-Calendar__day_column_vertical`}
                 data-date={day.date}
             >
-                {column_days}
-            </div>)
-        });
-
-        return (<div className={`${preC}-Calendar__week_body_vertical`}>
-            {listItems}
-        </div>);
-    }
-
-    printMeetingsBodyMobile() {
-        let {sliderSettings, sliderItems} = this.props;
-
-        return (
-            <Slider {...sliderSettings} className={'vertical-calendar--mobile'}>
-                {sliderItems}
-            </Slider>
+                {activeMeetings.map(meeting => (
+                    <CalendarMeetingMovil
+                        key={`meeting--${meeting.id}`}
+                        meeting={meeting}
+                        day={day}
+                        openFancy={openFancy}
+                        closedFancy={closedFancy}
+                        login_initial={login_initial}
+                    />
+                ))}
+            </div>
         );
-    }
+    });
+
+    return (
+        <div className={`${preC}-Calendar__week_body_vertical`}>
+            {listItems}
+        </div>
+    );
+}
+
+    
 
     render() {
         return (<div>
             {this.printDaysHeader()}
             {this.printMeetingsBody()}
-            {this.printMeetingsBodyMobile()}
         </div>)
         const { selectedDate } = this.state;
 
@@ -140,7 +142,7 @@ export default class MovilCalendarBody extends React.Component {
 
                  {this.printDaysHeader()} 
                 {this.printMeetingsBody()}
-                {/*this.printMeetingsBodyMobile()*/}
+               
             </div>
         );
     }

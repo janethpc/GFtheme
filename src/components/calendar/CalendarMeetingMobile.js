@@ -178,46 +178,60 @@ class CalendarMeetingMovil extends React.Component {
     null;
 
     return (
-        <div
-            className="GFSDK-e-meeting-list"
-            onClick={this.handleClick.bind(this)}
-        >
-            {/* LEFT */}
-            <div className="meeting-list__left">
-                <p className="meeting-time">
-                    {meeting.start_time}
-                </p>
-                <p className="meeting-duration">
-                    {duration} min.
-                </p>
+    <div
+        className="GFSDK-e-meeting-list meeting-item"
+        onClick={this.handleClick.bind(this)}
+    >
+        {/* LEFT */}
+        <div className="meeting-list__left">
+            <p className="meeting-time">{meeting.start_time}</p>
+            <p className="meeting-duration">{duration} min.</p>
 
-                <div className="meeting-avatar">
-                    {avatar ? (
-                        <img src={avatar} alt={staff && staff.name ? staff.name : ''} />
-                    ) : 
-
-                <p className="meeting-service">
-                    {meeting.service.parent_service_recursive
-                        ? meeting.service.parent_service_recursive.name
-                        : meeting.service.name}
-                </p>
-
-                <p className="meeting-location">
-                    {meeting.location.name}
-                </p>
-
-                <div className="meeting-footer">
-                    <span className="meeting-availability">
-                        {meeting.available}/{meeting.capacity} Open
-                    </span>
-
-                    <button className="meeting-reserve-btn">
-                        RESERVE
-                    </button>
-                </div>
+            <div className="meeting-avatar">
+                {avatar ? (
+                    <img
+                        src={avatar}
+                        alt={staff && staff.name ? staff.name : ''}
+                    />
+                ) : (
+                    <div className="avatar-placeholder" />
+                )}
             </div>
         </div>
-    );
+
+        {/* RIGHT */}
+        <div className="meeting-list__right">
+            <h4 className="meeting-title">
+                {meeting.service.name}
+            </h4>
+
+            <p className="meeting-coach">
+                {staff && staff.name} {staff && staff.lastname}
+            </p>
+
+            <p className="meeting-service">
+                {meeting.service.parent_service_recursive
+                    ? meeting.service.parent_service_recursive.name
+                    : meeting.service.name}
+            </p>
+
+            <p className="meeting-location">
+                {meeting.location.name}
+            </p>
+
+            <div className="meeting-footer">
+                <span className="meeting-availability">
+                    {meeting.available}/{meeting.capacity} Open
+                </span>
+
+                <button className="meeting-reserve-btn">
+                    RESERVAR
+                </button>
+            </div>
+        </div>
+    </div>
+);
+
 }
 }
 

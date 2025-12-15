@@ -1,44 +1,74 @@
-/* CONTENEDOR GENERAL */
-.GFSDK-e-meeting-list {
-    display: flex;
-    flex-direction: column; /* fuerza una por fila */
-    gap: 16px;
-    padding: 16px;
-    background: #f7f7f7;
+/* =========================
+   RESET
+========================= */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-/* TARJETA */
-.GFSDK-e-meeting-list > .meeting-item {
+/* =========================
+   CONTENEDORES PADRE (CRÍTICO)
+========================= */
+.GFSDK-c-Calendar__body,
+.GFSDK-c-Calendar__body-container,
+.GFSDK-c-Calendar__week_body_vertical,
+.GFSDK-c-Calendar__day_column_vertical {
+    width: 100% ;
+    max-width: 100%;
+}
+
+/* Lista vertical */
+.GFSDK-c-Calendar__week_body_vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 16px; /* margen lateral general */
+}
+
+/* Columna por día */
+.GFSDK-c-Calendar__day_column_vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* =========================
+   CARD PRINCIPAL
+========================= */
+.GFSDK-e-meeting-list.meeting-item {
+    width: 100%;
     display: flex;
     flex-direction: row;
-    background: #fff;
-    border-radius: 16px;
+    align-items: flex-start;
+    gap: 16px;
     padding: 16px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
 }
 
-/* COLUMNA IZQUIERDA */
+/* =========================
+   COLUMNA IZQUIERDA
+========================= */
 .meeting-list__left {
-    width: 80px;
+    width: 72px;
     flex-shrink: 0;
     text-align: center;
 }
 
-/* HORA */
 .meeting-time {
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 4px;
 }
 
-/* DURACIÓN */
 .meeting-duration {
     font-size: 13px;
     color: #777;
     margin-bottom: 12px;
 }
 
-/* AVATAR */
 .meeting-avatar {
     width: 48px;
     height: 48px;
@@ -60,80 +90,73 @@
     border-radius: 50%;
 }
 
-/* COLUMNA DERECHA */
+/* =========================
+   COLUMNA DERECHA
+========================= */
 .meeting-list__right {
     flex: 1;
-    padding-left: 16px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
 }
 
-/* TÍTULO */
 .meeting-title {
     font-size: 18px;
     font-weight: 700;
-    margin: 0 0 4px;
+    margin: 0;
 }
 
-/* SUBRAYADO DEL TÍTULO */
 .meeting-title::after {
     content: '';
     display: block;
     width: 100%;
     height: 1px;
     background: #000;
-    margin-top: 4px;
+    margin: 6px 0 10px;
 }
 
-/* COACH */
 .meeting-coach {
     font-size: 16px;
     color: #444;
-    margin-top: 6px;
+    margin-bottom: 4px;
 }
 
-/* SERVICIO Y UBICACIÓN */
 .meeting-service,
 .meeting-location {
     font-size: 14px;
     color: #666;
-    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 .meeting-footer {
-    margin-top: 16px;
+    margin-top: auto;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
-/* DISPONIBILIDAD */
 .meeting-availability {
     font-size: 16px;
     font-weight: 600;
 }
 
-/* BOTÓN */
 .meeting-reserve-btn {
     width: 100%;
-    text-align: center;
     padding: 12px 0;
     border: 2px solid #000;
     background: transparent;
     font-weight: 700;
     letter-spacing: 1px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
 }
 
-/* ESTADO HOVER */
-.meeting-reserve-btn:hover {
-    background: #000;
-    color: #fff;
-}
-
-/* DIVISOR ENTRE CLASES */
-.meeting-item + .meeting-item {
-    border-top: 1px solid #eee;
+/* =========================
+   DESACTIVAR SLICK (GLOBAL)
+========================= */
+.vertical-calendar--mobile {
+    display: none !important;
 }
