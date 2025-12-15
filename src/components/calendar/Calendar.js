@@ -4,6 +4,7 @@ import React from "react";
 import CalendarStorage from './CalendarStorage';
 import GlobalStorage from '../store/GlobalStorage';
 import CalendarBody from "./CalendarBody";
+import MovilCalendarBody from "./vertical/MovilCalendarBody";
 import LoginRegister from "../menu/LoginRegister";
 
 import IconSelectDownArrow from "../utils/Icons/IconSelectDownArrow";
@@ -286,6 +287,10 @@ class Calendar extends React.Component {
         }
     }
 
+    isMobile() {
+        return window.innerWidth <= 768;
+    }
+
     render() {
         let {
             is_mounted,
@@ -349,7 +354,11 @@ class Calendar extends React.Component {
             });
         }
 
-        let head_class = '__head-' + (visualization === 'vertical' ? visualization : 'horizontal');
+        const isMobileView = visualization === 'mobile' || this.isMobile();
+
+        let head_class = isMobileView
+            ? '__head-mobile'
+            : '__head-' + (visualization === 'vertical' ? visualization : 'horizontal');
 
 
         let services_return = [];
@@ -487,8 +496,16 @@ class Calendar extends React.Component {
                         </div>
                         : null
                     }
-                    {is_mounted
-                        ?
+                 {is_mounted ? (
+                    this.isMobile() ? (
+                        <MovilCalendarBody
+                            meetings={meetings}
+                            limit={this.props.limit}
+                            openFancy={this.openFancy}
+                            closedFancy={this.closedFancy}
+                            login_initial={this.props.login_initial}
+                        />
+                    ) : (
                         <CalendarBody
                             meetings={meetings}
                             limit={this.props.limit}
@@ -496,9 +513,11 @@ class Calendar extends React.Component {
                             closedFancy={this.closedFancy}
                             login_initial={this.props.login_initial}
                         />
-                        :
-                        <Loading/>
-                    }
+                        )
+                    ) : (
+                    <Loading />
+                )}
+
                 </div>
 
                 {this.state.showRegister &&

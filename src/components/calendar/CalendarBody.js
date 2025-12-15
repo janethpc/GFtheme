@@ -15,6 +15,9 @@ import 'moment/locale/es';
 import StringStore from "../utils/Strings/StringStore";
 import VerticalCalendarBody from "./vertical/VerticalCalendarBody";
 import MonthCalendarBody from "./vertical/MonthCalendarBody";
+import MovilCalendarBody from "./vertical/MovilCalendarBody";
+
+
 
 moment.locale('es');
 
@@ -254,29 +257,55 @@ class CalendarBody extends React.Component {
             }
         );
         if (visualization === 'vertical') {
-            response = (<VerticalCalendarBody
-                meetings_to_show={meetings_to_show}
-                openFancy={this.props.openFancy}
-                closedFancy={this.props.closedFancy}
-                login_initial={login_initial}
-                sliderSettings={settings}
-                sliderItems={listItems}
-            />);
-        } else if (visualization === 'month') { // se agrega un nuevo modo de vista
-            response = (<MonthCalendarBody
-                meetings_to_show={meetings_to_show}
-                openFancy={this.props.openFancy}
-                closedFancy={this.props.closedFancy}
-                login_initial={login_initial}
-                sliderSettings={settings}
-                sliderItems={listItems}
-            />);
+
+            response = (
+                <VerticalCalendarBody
+                    meetings_to_show={meetings_to_show}
+                    openFancy={this.props.openFancy}
+                    closedFancy={this.props.closedFancy}
+                    login_initial={login_initial}
+                    sliderSettings={settings}
+                    sliderItems={listItems}
+                />
+            );
+
+        } else if (visualization === 'month') {
+
+            response = (
+                <MonthCalendarBody
+                    meetings_to_show={meetings_to_show}
+                    openFancy={this.props.openFancy}
+                    closedFancy={this.props.closedFancy}
+                    login_initial={login_initial}
+                    sliderSettings={settings}
+                    sliderItems={listItems}
+                />
+            );
+
+        } else if (visualization === 'mobile') {
+
+            response = (
+                <MovilCalendarBody
+                    meetings_to_show={meetings_to_show}
+                    openFancy={this.props.openFancy}
+                    closedFancy={this.props.closedFancy}
+                    login_initial={login_initial}
+                    sliderSettings={settings}
+                    sliderItems={listItems}
+                />
+            );
+
         } else {
-            response = meetings_to_show.length > 0 && settings && listItems
-                ? (<Slider {...settings}>
-                    {listItems}
-                </Slider>)
-                : null;
+
+            // horizontal (default)
+            response =
+                meetings_to_show.length > 0 && settings && listItems
+                    ? (
+                        <Slider {...settings}>
+                            {listItems}
+                        </Slider>
+                    )
+                    : null;
         }
 
         return response;
